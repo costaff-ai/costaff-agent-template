@@ -1,15 +1,15 @@
-# Mateclaw Agent Template
+# CoStaff Agent Template
 
 [![Python Version](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/)
 [![Google ADK](https://img.shields.io/badge/Google%20ADK-latest-orange.svg)](https://github.com/google/adk-python)
 [![MCP](https://img.shields.io/badge/MCP-enabled-green.svg)](https://modelcontextprotocol.io/)
 [![Docker](https://img.shields.io/badge/docker-supported-blue.svg)](https://www.docker.com/)
 [![A2A Protocol](https://img.shields.io/badge/A2A-protocol-violet.svg)](https://github.com/google/A2A)
-[![mateclaw.agent.json](https://img.shields.io/badge/mateclaw-compatible-blue.svg)](https://github.com/MateClawAI/mateclaw)
+[![costaff.agent.json](https://img.shields.io/badge/costaff-compatible-blue.svg)](https://github.com/CoStaffAI/costaff)
 
 **English** | [繁體中文](./README_zhtw.md)
 
-**Mateclaw Agent Template** 是在 [Mateclaw](https://github.com/MateClawAI/mateclaw) 平台上建立 external agent 的起始模板。它遵循與官方 first-party agents（`mateclaw-coding-agent`、`mateclaw-viz-report-agent`）相同的架構，可以直接用 Docker Compose 或 Mateclaw CLI 部署。
+**CoStaff Agent Template** 是在 [CoStaff](https://github.com/CoStaffAI/costaff) 平台上建立 external agent 的起始模板。它遵循與官方 first-party agents（`costaff-coding-agent`、`costaff-viz-report-agent`）相同的架構，可以直接用 Docker Compose 或 CoStaff CLI 部署。
 
 ---
 
@@ -21,7 +21,7 @@
 - [客製化指南](#客製化指南)
 - [環境變數](#環境變數)
 - [MCP 擴充](#mcp-擴充)
-- [mateclaw.agent.json](#mateclawagentjson)
+- [costaff.agent.json](#costaffagentjson)
 - [授權](#授權)
 
 ---
@@ -29,14 +29,14 @@
 ## 運作原理
 
 ```
-Mateclaw Agent
+CoStaff Agent
      │
      │  A2A Protocol (/.well-known/agent.json)
      ▼
 Template Agent  ──►  MCP Template Server  ──►  你的工具 / 資料 / API
 ```
 
-1. Mateclaw Agent 透過 **A2A 協議** 委派任務
+1. CoStaff Agent 透過 **A2A 協議** 委派任務
 2. Agent 根據 system prompt 推理，並透過 **MCP Server** 呼叫工具
 3. 結果儲存在共享 volume，並回傳給呼叫端 agent
 
@@ -45,7 +45,7 @@ Template Agent  ──►  MCP Template Server  ──►  你的工具 / 資料
 ## 專案架構
 
 ```
-mateclaw-agent-template/
+costaff-agent-template/
 ├── agent/                        # ADK agent 定義
 │   ├── agent.py                  # LlmAgent，含動態 MCP 載入
 │   ├── agent_a2a.py              # A2A server 進入點
@@ -58,7 +58,7 @@ mateclaw-agent-template/
 │   ├── requirements.txt
 │   └── Dockerfile
 ├── docker-compose.yaml           # 獨立部署設定
-├── mateclaw.agent.json           # Mateclaw 平台 manifest
+├── costaff.agent.json           # CoStaff 平台 manifest
 └── .gitignore
 ```
 
@@ -74,8 +74,8 @@ mateclaw-agent-template/
 ### 獨立部署
 
 ```bash
-git clone https://github.com/MateClawAI/mateclaw-agent-template.git
-cd mateclaw-agent-template
+git clone https://github.com/CoStaffAI/costaff-agent-template.git
+cd costaff-agent-template
 
 # 設定 API Key
 export GOOGLE_API_KEY=your_key_here
@@ -86,13 +86,13 @@ docker compose up -d --build
 
 Agent 將在 `http://localhost:8081` 提供服務。
 
-### 透過 Mateclaw 平台部署
+### 透過 CoStaff 平台部署
 
 ```bash
-mateclaw agent deploy --local /path/to/your-agent
+cst agent deploy --local /path/to/your-agent
 ```
 
-Mateclaw 會讀取 `mateclaw.agent.json`，自動 build、啟動容器並註冊 agent。
+CoStaff 會讀取 `costaff.agent.json`，自動 build、啟動容器並註冊 agent。
 
 ---
 
@@ -123,7 +123,7 @@ Mateclaw 會讀取 `mateclaw.agent.json`，自動 build、啟動容器並註冊 
 
 ### 4. 更新 manifest 檔案
 
-- `mateclaw.agent.json` — 更新 `name`、`description`、環境變數名稱
+- `costaff.agent.json` — 更新 `name`、`description`、環境變數名稱
 - `docker-compose.yaml` — 更新 service 名稱、環境變數、volume 名稱
 
 ---
@@ -134,7 +134,7 @@ Mateclaw 會讀取 `mateclaw.agent.json`，自動 build、啟動容器並註冊 
 |------|------|--------|------|
 | `GOOGLE_API_KEY` | ✅ | — | Google Gemini API key |
 | `TEMPLATE_AGENT_MODEL` | ❌ | `gemini-2.5-flash` | Gemini provider 的 model 名稱 |
-| `MATECLAW_AGENT_MODEL_PROVIDER` | ❌ | `gemini` | `gemini` 或 `litellm` |
+| `COSTAFF_AGENT_MODEL_PROVIDER` | ❌ | `gemini` | `gemini` 或 `litellm` |
 | `LITELLM_MODEL_NAME` | ❌ | — | LiteLLM provider 的 model 名稱 |
 | `LITELLM_API_BASE` | ❌ | — | LiteLLM API base URL |
 | `LITELLM_API_KEY` | ❌ | — | LiteLLM API key |
@@ -146,7 +146,7 @@ Mateclaw 會讀取 `mateclaw.agent.json`，自動 build、啟動容器並註冊 
 
 ## MCP 擴充
 
-額外的 MCP（資料庫、搜尋 API、內部工具）可以從 **Mateclaw dashboard** 的 `Agents → your-agent → MCP Extensions → Apply & Restart` 動態指派，不需要重新部署。
+額外的 MCP（資料庫、搜尋 API、內部工具）可以從 **CoStaff dashboard** 的 `Agents → your-agent → MCP Extensions → Apply & Restart` 動態指派，不需要重新部署。
 
 額外 MCP 透過 `TEMPLATE_AGENT_MCP_URLS` 環境變數以 JSON dict 傳入：
 
@@ -164,9 +164,9 @@ Mateclaw 會讀取 `mateclaw.agent.json`，自動 build、啟動容器並註冊 
 
 ---
 
-## mateclaw.agent.json
+## costaff.agent.json
 
-此 manifest 宣告 agent 的身份和能力給 Mateclaw 平台：
+此 manifest 宣告 agent 的身份和能力給 CoStaff 平台：
 
 ```json
 {

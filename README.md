@@ -1,15 +1,15 @@
-# Mateclaw Agent Template
+# CoStaff Agent Template
 
 [![Python Version](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/)
 [![Google ADK](https://img.shields.io/badge/Google%20ADK-latest-orange.svg)](https://github.com/google/adk-python)
 [![MCP](https://img.shields.io/badge/MCP-enabled-green.svg)](https://modelcontextprotocol.io/)
 [![Docker](https://img.shields.io/badge/docker-supported-blue.svg)](https://www.docker.com/)
 [![A2A Protocol](https://img.shields.io/badge/A2A-protocol-violet.svg)](https://github.com/google/A2A)
-[![mateclaw.agent.json](https://img.shields.io/badge/mateclaw-compatible-blue.svg)](https://github.com/MateClawAI/mateclaw)
+[![costaff.agent.json](https://img.shields.io/badge/costaff-compatible-blue.svg)](https://github.com/CoStaffAI/costaff)
 
 [繁體中文](./README_zhtw.md) | **English**
 
-**Mateclaw Agent Template** is a starting point for building external agents on the [Mateclaw](https://github.com/MateClawAI/mateclaw) platform. It follows the same architecture as first-party agents (`mateclaw-coding-agent`, `mateclaw-viz-report-agent`) and is ready to deploy with Docker Compose or the Mateclaw CLI.
+**CoStaff Agent Template** is a starting point for building external agents on the [CoStaff](https://github.com/CoStaffAI/costaff) platform. It follows the same architecture as first-party agents (`costaff-coding-agent`, `costaff-viz-report-agent`) and is ready to deploy with Docker Compose or the CoStaff CLI.
 
 ---
 
@@ -21,7 +21,7 @@
 - [Customisation Guide](#customisation-guide)
 - [Environment Variables](#environment-variables)
 - [MCP Extensions](#mcp-extensions)
-- [mateclaw.agent.json](#mateclawagentjson)
+- [costaff.agent.json](#costaffagentjson)
 - [License](#license)
 
 ---
@@ -29,14 +29,14 @@
 ## How It Works
 
 ```
-Mateclaw Agent
+CoStaff Agent
      │
      │  A2A Protocol (/.well-known/agent.json)
      ▼
 Template Agent  ──►  MCP Template Server  ──►  Your tools / data / APIs
 ```
 
-1. The Mateclaw Agent delegates tasks via **A2A protocol**
+1. The CoStaff Agent delegates tasks via **A2A protocol**
 2. The agent reasons using its system prompt and calls tools via the **MCP server**
 3. Results are saved to a shared volume and returned to the calling agent
 
@@ -45,7 +45,7 @@ Template Agent  ──►  MCP Template Server  ──►  Your tools / data / A
 ## Architecture
 
 ```
-mateclaw-agent-template/
+costaff-agent-template/
 ├── agent/                        # ADK agent definition
 │   ├── agent.py                  # LlmAgent with dynamic MCP loading
 │   ├── agent_a2a.py              # A2A server entrypoint
@@ -58,7 +58,7 @@ mateclaw-agent-template/
 │   ├── requirements.txt
 │   └── Dockerfile
 ├── docker-compose.yaml           # Standalone deployment
-├── mateclaw.agent.json           # Mateclaw platform manifest
+├── costaff.agent.json           # CoStaff platform manifest
 └── .gitignore
 ```
 
@@ -74,8 +74,8 @@ mateclaw-agent-template/
 ### Standalone
 
 ```bash
-git clone https://github.com/MateClawAI/mateclaw-agent-template.git
-cd mateclaw-agent-template
+git clone https://github.com/CoStaffAI/costaff-agent-template.git
+cd costaff-agent-template
 
 # Set your API key
 export GOOGLE_API_KEY=your_key_here
@@ -86,13 +86,13 @@ docker compose up -d --build
 
 The agent will be available at `http://localhost:8081`.
 
-### Via Mateclaw Platform
+### Via CoStaff Platform
 
 ```bash
-mateclaw agent deploy --local /path/to/your-agent
+cst agent deploy --local /path/to/your-agent
 ```
 
-Mateclaw reads `mateclaw.agent.json`, builds and starts the containers, and registers the agent automatically.
+CoStaff reads `costaff.agent.json`, builds and starts the containers, and registers the agent automatically.
 
 ---
 
@@ -123,7 +123,7 @@ Search for all `TODO` comments across the project — each marks a decision poin
 
 ### 4. Update manifests
 
-- `mateclaw.agent.json` — update `name`, `description`, env var names
+- `costaff.agent.json` — update `name`, `description`, env var names
 - `docker-compose.yaml` — update service names, env vars, volume name
 
 ---
@@ -134,7 +134,7 @@ Search for all `TODO` comments across the project — each marks a decision poin
 |----------|----------|---------|-------------|
 | `GOOGLE_API_KEY` | ✅ | — | Google Gemini API key |
 | `TEMPLATE_AGENT_MODEL` | ❌ | `gemini-2.5-flash` | Model name for Gemini provider |
-| `MATECLAW_AGENT_MODEL_PROVIDER` | ❌ | `gemini` | `gemini` or `litellm` |
+| `COSTAFF_AGENT_MODEL_PROVIDER` | ❌ | `gemini` | `gemini` or `litellm` |
 | `LITELLM_MODEL_NAME` | ❌ | — | Model name for LiteLLM provider |
 | `LITELLM_API_BASE` | ❌ | — | LiteLLM API base URL |
 | `LITELLM_API_KEY` | ❌ | — | LiteLLM API key |
@@ -146,7 +146,7 @@ Search for all `TODO` comments across the project — each marks a decision poin
 
 ## MCP Extensions
 
-Additional MCPs (databases, search APIs, internal tools) can be assigned dynamically from the **Mateclaw dashboard** under `Agents → your-agent → MCP Extensions → Apply & Restart` — no redeployment needed.
+Additional MCPs (databases, search APIs, internal tools) can be assigned dynamically from the **CoStaff dashboard** under `Agents → your-agent → MCP Extensions → Apply & Restart` — no redeployment needed.
 
 Extra MCPs are passed via the `TEMPLATE_AGENT_MCP_URLS` environment variable as a JSON dict:
 
@@ -164,9 +164,9 @@ Supported transports: `sse` (URL contains `/sse`) and `streamable` (default).
 
 ---
 
-## mateclaw.agent.json
+## costaff.agent.json
 
-This manifest declares the agent's identity and capabilities to the Mateclaw platform:
+This manifest declares the agent's identity and capabilities to the CoStaff platform:
 
 ```json
 {

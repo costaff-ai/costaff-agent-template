@@ -36,7 +36,7 @@ MCP_TEMPLATE_URL = os.getenv("MCP_TEMPLATE_URL", "http://mcp-template:8082/mcp")
 tools = [McpToolset(connection_params=StreamableHTTPServerParams(url=MCP_TEMPLATE_URL))]
 logger.info(f"Template MCP URL: {MCP_TEMPLATE_URL}")
 
-# Additional MCPs configured via Mateclaw dashboard
+# Additional MCPs configured via CoStaff dashboard
 # TODO: Replace TEMPLATE_AGENT_MCP_URLS with your agent-specific env var name
 raw_extra = os.getenv("TEMPLATE_AGENT_MCP_URLS", "")
 if raw_extra:
@@ -54,7 +54,7 @@ if raw_extra:
     except json.JSONDecodeError:
         logger.error("TEMPLATE_AGENT_MCP_URLS is not valid JSON, skipping extra MCPs")
 
-model_provider = os.getenv("MATECLAW_AGENT_MODEL_PROVIDER", "gemini").lower()
+model_provider = os.getenv("COSTAFF_AGENT_MODEL_PROVIDER", "gemini").lower()
 # TODO: Replace TEMPLATE_AGENT_MODEL with your agent-specific env var name
 model_name = os.getenv("TEMPLATE_AGENT_MODEL", "gemini-2.5-flash")
 
