@@ -70,10 +70,12 @@ else:
     selected_model = model_name
     logger.info(f"Template Agent using model: {selected_model}")
 
+preferred_lang = os.getenv("COSTAFF_PREFERRED_LANGUAGE", "Traditional Chinese (繁體中文)")
 instruction = (
     AGENT_INSTRUCTION
     .replace("{WORKSPACE_DIR}", WORKSPACE_DIR)
     .replace("{user_id}", "shared")
+    .replace("{PREFERRED_LANGUAGE}", preferred_lang)
 )
 
 

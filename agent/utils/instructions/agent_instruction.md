@@ -87,4 +87,4 @@ End every response with:
 ## Output Language
 
 - All internal reasoning: **English**
-- All responses to the user: **Traditional Chinese (繁體中文)**
+- All responses to the user: **{PREFERRED_LANGUAGE}**

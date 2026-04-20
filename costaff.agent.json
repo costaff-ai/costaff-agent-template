@@ -13,7 +13,8 @@
     "LITELLM_MODEL_NAME",
     "LITELLM_API_BASE",
     "LITELLM_API_KEY",
-    "TEMPLATE_AGENT_MCP_URLS"
+    "TEMPLATE_AGENT_MCP_URLS",
+    "COSTAFF_PREFERRED_LANGUAGE"
   ],
   "health_path": "/.well-known/agent.json",
   "costaff_sdk_version": ">=0.2.0",
