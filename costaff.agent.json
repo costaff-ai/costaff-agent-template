@@ -1,5 +1,5 @@
 {
-  "name": "template-agent",
+  "name": "costaff-agent-template",
   "version": "1.0.0",
   "description": "TODO: Describe what this agent does in one sentence.",
   "a2a_service": "agent-template",

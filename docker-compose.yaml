@@ -1,8 +1,8 @@
-# TODO: Replace all occurrences of "template-agent" and "mcp-template" with your agent's names.
+# TODO: Replace all occurrences of "costaff-agent-template" and "mcp-template" with your agent's names.
 # TODO: Replace all TEMPLATE_ env var prefixes with your agent's prefix.
 
 services:
-  # TODO: Rename "template-agent" to your agent's service name (kebab-case)
+  # TODO: Rename "costaff-agent-template" to your agent's service name (kebab-case)
   agent-template:
     build:
       context: ./agent
@@ -11,7 +11,7 @@ services:
     environment:
       - PORT=8081
       # TODO: Update PUBLIC_HOST to match the service name above
-      - PUBLIC_HOST=template-agent
+      - PUBLIC_HOST=costaff-agent-template
       # TODO: Update MCP_TEMPLATE_URL to point to your MCP service
       - MCP_TEMPLATE_URL=http://costaff-mcp-template:8082/mcp
       # TODO: Update TEMPLATE_WORKSPACE_DIR if your agent uses a different workspace path

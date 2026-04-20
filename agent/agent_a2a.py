@@ -8,7 +8,7 @@ from agent import template_agent
 
 PORT = int(os.getenv("PORT", "8081"))
 # In CoStaff, this should match the a2a_service name in costaff.agent.json
-PUBLIC_HOST = os.getenv("PUBLIC_HOST", "template-agent")
+PUBLIC_HOST = os.getenv("PUBLIC_HOST", "costaff-agent-template")
 
 # Provide a minimal agent card with only the agent-level description.
 # Omitting individual tool skills prevents the parent agent from seeing
