@@ -3,10 +3,10 @@
 
 services:
   # TODO: Rename "template-agent" to your agent's service name (kebab-case)
-  template-agent:
+  agent-template:
     build:
       context: ./agent
-    container_name: costaff-template-agent
+    container_name: costaff-agent-template
     restart: on-failure
     environment:
       - PORT=8081
