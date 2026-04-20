@@ -105,8 +105,9 @@ CoStaff 會讀取 `costaff.agent.json`，自動 build、啟動容器並註冊 ag
 | 搜尋 | 取代為 |
 |------|--------|
 | `template_agent` | `your_agent_name`（snake_case，Python 檔案） |
-| `template-agent` | `your-agent-name`（kebab-case，YAML / JSON） |
-| `mcp-template` | `mcp-your-agent`（kebab-case） |
+| `agent-template` | `agent-your-name`（service key，YAML） |
+| `costaff-agent-template` | `costaff-agent-your-name`（container_name） |
+| `costaff-mcp-template` | `costaff-mcp-your-agent`（MCP service key / container_name） |
 | `TEMPLATE_` | `YOUR_AGENT_`（SCREAMING_SNAKE_CASE，環境變數前綴） |
 | `template_data` | `your_agent_data`（Docker volume 名稱） |
 | `TODO: 這裡填寫 Agent 的中文顯示名稱` | `您的 Agent 中文稱呼`（用於主 Agent 識別） |
@@ -139,7 +140,7 @@ CoStaff 會讀取 `costaff.agent.json`，自動 build、啟動容器並註冊 ag
 | `LITELLM_MODEL_NAME` | ❌ | — | LiteLLM provider 的 model 名稱 |
 | `LITELLM_API_BASE` | ❌ | — | LiteLLM API base URL |
 | `LITELLM_API_KEY` | ❌ | — | LiteLLM API key |
-| `MCP_TEMPLATE_URL` | ❌ | `http://mcp-template:8082/sse` | 內部 MCP server URL |
+| `MCP_TEMPLATE_URL` | ❌ | `http://costaff-mcp-your-agent:8082/sse` | 內部 MCP server URL |
 | `TEMPLATE_WORKSPACE_DIR` | ❌ | `/app/data/workspace` | 共享資料目錄 |
 | `TEMPLATE_AGENT_MCP_URLS` | ❌ | — | 額外 MCP servers 的 JSON dict |
 

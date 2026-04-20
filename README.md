@@ -104,9 +104,10 @@ Search for all `TODO` comments across the project — each marks a decision poin
 
 | Find | Replace with |
 |------|--------------|
-| `template_agent` | `your_agent_name` (snake_case, in Python files) |
-| `template-agent` | `your-agent-name` (kebab-case, in YAML / JSON) |
-| `mcp-template` | `mcp-your-agent` (kebab-case) |
+| `template_agent` | `your_agent_name` (snake_case, Python files) |
+| `agent-template` | `agent-your-name` (service key, YAML) |
+| `costaff-agent-template` | `costaff-agent-your-name` (container_name) |
+| `costaff-mcp-template` | `costaff-mcp-your-agent` (MCP service key / container_name) |
 | `TEMPLATE_` | `YOUR_AGENT_` (SCREAMING_SNAKE_CASE, env var prefix) |
 | `template_data` | `your_agent_data` (Docker volume name) |
 
@@ -138,7 +139,7 @@ Search for all `TODO` comments across the project — each marks a decision poin
 | `LITELLM_MODEL_NAME` | ❌ | — | Model name for LiteLLM provider |
 | `LITELLM_API_BASE` | ❌ | — | LiteLLM API base URL |
 | `LITELLM_API_KEY` | ❌ | — | LiteLLM API key |
-| `MCP_TEMPLATE_URL` | ❌ | `http://mcp-template:8082/sse` | Internal MCP server URL |
+| `MCP_TEMPLATE_URL` | ❌ | `http://costaff-mcp-your-agent:8082/sse` | Internal MCP server URL |
 | `TEMPLATE_WORKSPACE_DIR` | ❌ | `/app/data/workspace` | Shared data directory |
 | `TEMPLATE_AGENT_MCP_URLS` | ❌ | — | JSON dict of extra MCP servers |
 
