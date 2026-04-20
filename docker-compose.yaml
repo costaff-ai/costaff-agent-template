@@ -24,7 +24,7 @@ services:
       - LITELLM_API_BASE=${LITELLM_API_BASE:-}
       - LITELLM_API_KEY=${LITELLM_API_KEY:-}
     volumes:
-      - template_data:/app/data
+      - costaff_data:/app/data
     depends_on:
       - costaff-mcp-template
 
@@ -40,8 +40,9 @@ services:
       # TODO: Update TEMPLATE_WORKSPACE_DIR to match the agent's workspace path
       - TEMPLATE_WORKSPACE_DIR=/app/data/workspace
     volumes:
-      - template_data:/app/data
+      - costaff_data:/app/data
 
 volumes:
   # TODO: Rename "template_data" to your agent's volume name
-  template_data:
+  costaff_data:
+    name: costaff_data
