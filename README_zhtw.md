@@ -109,6 +109,7 @@ CoStaff 會讀取 `costaff.agent.json`，自動 build、啟動容器並註冊 ag
 | `mcp-template` | `mcp-your-agent`（kebab-case） |
 | `TEMPLATE_` | `YOUR_AGENT_`（SCREAMING_SNAKE_CASE，環境變數前綴） |
 | `template_data` | `your_agent_data`（Docker volume 名稱） |
+| `TODO: 這裡填寫 Agent 的中文顯示名稱` | `您的 Agent 中文稱呼`（用於主 Agent 識別） |
 
 ### 2. 撰寫 MCP 工具（`mcp/server.py`）
 

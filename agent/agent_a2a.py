@@ -7,7 +7,8 @@ from a2a.types import AgentCard
 from agent import template_agent
 
 PORT = int(os.getenv("PORT", "8081"))
-PUBLIC_HOST = os.getenv("PUBLIC_HOST", "localhost")
+# In CoStaff, this should match the a2a_service name in costaff.agent.json
+PUBLIC_HOST = os.getenv("PUBLIC_HOST", "template-agent")
 
 # Provide a minimal agent card with only the agent-level description.
 # Omitting individual tool skills prevents the parent agent from seeing
@@ -18,7 +19,9 @@ agent_card = AgentCard(
     url=f"http://{PUBLIC_HOST}:{PORT}",
     description=template_agent.description,
     version="1.0.0",
-    capabilities={},
+    capabilities={
+        "display_name": "TODO: 這裡填寫 Agent 的中文顯示名稱 (例如：AI 數據分析師)"
+    },
     skills=[],
     default_input_modes=["text/plain"],
     default_output_modes=["text/plain"],
