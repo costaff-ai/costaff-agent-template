@@ -2,7 +2,7 @@
   "name": "template-agent",
   "version": "1.0.0",
   "description": "TODO: Describe what this agent does in one sentence.",
-  "a2a_service": "template-agent",
+  "a2a_service": "agent-template",
   "port": 8081,
   "env_required": [
     "GOOGLE_API_KEY"
@@ -20,7 +20,8 @@
   ],
   "model_env_var": "TEMPLATE_AGENT_MODEL",
   "health_path": "/.well-known/agent.json",
-  "costaff_sdk_version": ">=0.2.0",
   "mcp_configurable": true,
   "mcp_env_var": "TEMPLATE_AGENT_MCP_URLS"
+}
+
 }

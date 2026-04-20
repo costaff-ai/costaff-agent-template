@@ -32,7 +32,7 @@ def get_connection_params(entry):
 
 
 # TODO: Replace MCP_TEMPLATE_URL with your own MCP env var and service name
-MCP_TEMPLATE_URL = os.getenv("MCP_TEMPLATE_URL", "http://mcp-template:8082/mcp")
+MCP_TEMPLATE_URL = os.getenv("MCP_TEMPLATE_URL", "http://costaff-mcp-template:8082/mcp")
 tools = [McpToolset(connection_params=StreamableHTTPServerParams(url=MCP_TEMPLATE_URL))]
 logger.info(f"Template MCP URL: {MCP_TEMPLATE_URL}")
 
