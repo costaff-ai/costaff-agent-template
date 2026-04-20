@@ -5,11 +5,11 @@
 [![MCP](https://img.shields.io/badge/MCP-enabled-green.svg)](https://modelcontextprotocol.io/)
 [![Docker](https://img.shields.io/badge/docker-supported-blue.svg)](https://www.docker.com/)
 [![A2A Protocol](https://img.shields.io/badge/A2A-protocol-violet.svg)](https://github.com/google/A2A)
-[![costaff.agent.json](https://img.shields.io/badge/costaff-compatible-blue.svg)](https://github.com/CoStaffAI/costaff)
+[![costaff.agent.json](https://img.shields.io/badge/costaff-compatible-blue.svg)](https://github.com/costaff-ai/costaff)
 
 **English** | [繁體中文](./README_zhtw.md)
 
-**CoStaff Agent Template** 是在 [CoStaff](https://github.com/CoStaffAI/costaff) 平台上建立 external agent 的起始模板。它遵循與官方 first-party agents（`costaff-coding-agent`、`costaff-viz-report-agent`）相同的架構，可以直接用 Docker Compose 或 CoStaff CLI 部署。
+**CoStaff Agent Template** 是在 [CoStaff](https://github.com/costaff-ai/costaff) 平台上建立 external agent 的起始模板。它遵循與官方 first-party agents（`costaff-agent-coding`、`costaff-agent-viz-report`）相同的架構，可以直接用 Docker Compose 或 CoStaff CLI 部署。
 
 ---
 
@@ -74,7 +74,7 @@ costaff-agent-template/
 ### 獨立部署
 
 ```bash
-git clone https://github.com/CoStaffAI/costaff-agent-template.git
+git clone https://github.com/costaff-ai/costaff-agent-template.git
 cd costaff-agent-template
 
 # 設定 API Key

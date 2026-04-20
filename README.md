@@ -5,11 +5,11 @@
 [![MCP](https://img.shields.io/badge/MCP-enabled-green.svg)](https://modelcontextprotocol.io/)
 [![Docker](https://img.shields.io/badge/docker-supported-blue.svg)](https://www.docker.com/)
 [![A2A Protocol](https://img.shields.io/badge/A2A-protocol-violet.svg)](https://github.com/google/A2A)
-[![costaff.agent.json](https://img.shields.io/badge/costaff-compatible-blue.svg)](https://github.com/CoStaffAI/costaff)
+[![costaff.agent.json](https://img.shields.io/badge/costaff-compatible-blue.svg)](https://github.com/costaff-ai/costaff)
 
 [繁體中文](./README_zhtw.md) | **English**
 
-**CoStaff Agent Template** is a starting point for building external agents on the [CoStaff](https://github.com/CoStaffAI/costaff) platform. It follows the same architecture as first-party agents (`costaff-coding-agent`, `costaff-viz-report-agent`) and is ready to deploy with Docker Compose or the CoStaff CLI.
+**CoStaff Agent Template** is a starting point for building external agents on the [CoStaff](https://github.com/costaff-ai/costaff) platform. It follows the same architecture as first-party agents (`costaff-agent-coding`, `costaff-agent-viz-report`) and is ready to deploy with Docker Compose or the CoStaff CLI.
 
 ---
 
@@ -74,7 +74,7 @@ costaff-agent-template/
 ### Standalone
 
 ```bash
-git clone https://github.com/CoStaffAI/costaff-agent-template.git
+git clone https://github.com/costaff-ai/costaff-agent-template.git
 cd costaff-agent-template
 
 # Set your API key
