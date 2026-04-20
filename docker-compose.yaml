@@ -14,8 +14,8 @@ services:
       - PUBLIC_HOST=costaff-agent-template
       # TODO: Update MCP_TEMPLATE_URL to point to your MCP service
       - MCP_TEMPLATE_URL=http://costaff-mcp-template:8082/mcp
-      # TODO: Update TEMPLATE_WORKSPACE_DIR if your agent uses a different workspace path
-      - TEMPLATE_WORKSPACE_DIR=/app/data/workspace
+      - WORKSPACE_DIR=/app/data
+      - AGENT_TEMPLATE_WORKSPACE_DIR=/app/data/agent-template
       - COSTAFF_AGENT_MODEL_PROVIDER=${COSTAFF_AGENT_MODEL_PROVIDER:-gemini}
       # TODO: Rename TEMPLATE_AGENT_MODEL to your agent's model env var
       - TEMPLATE_AGENT_MODEL=${TEMPLATE_AGENT_MODEL:-gemini-2.5-flash}
@@ -37,12 +37,11 @@ services:
     environment:
       # TODO: Rename MCP_TEMPLATE_PORT if needed
       - MCP_TEMPLATE_PORT=8082
-      # TODO: Update TEMPLATE_WORKSPACE_DIR to match the agent's workspace path
-      - TEMPLATE_WORKSPACE_DIR=/app/data/workspace
+      - WORKSPACE_DIR=/app/data
+      - AGENT_TEMPLATE_WORKSPACE_DIR=/app/data/agent-template
     volumes:
       - costaff_data:/app/data
 
 volumes:
-  # TODO: Rename "template_data" to your agent's volume name
   costaff_data:
     name: costaff_data

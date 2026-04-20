@@ -11,8 +11,7 @@ logger = logging.getLogger("mcp-template")
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-# TODO: Replace TEMPLATE_WORKSPACE_DIR with your agent's workspace env var
-WORKSPACE = os.getenv("TEMPLATE_WORKSPACE_DIR", "/app/data/workspace")
+WORKSPACE = os.getenv("AGENT_TEMPLATE_WORKSPACE_DIR", "/app/data/agent-template")
 os.makedirs(WORKSPACE, exist_ok=True)
 
 # TODO: Rename "Template" to your MCP server's name

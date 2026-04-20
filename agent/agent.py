@@ -17,7 +17,7 @@ from google.adk.tools.mcp_tool.mcp_session_manager import StreamableHTTPServerPa
 from utils.instructions import AGENT_INSTRUCTION
 
 # TODO: Replace with your agent's workspace directory env var and default path
-WORKSPACE_DIR = os.getenv("TEMPLATE_WORKSPACE_DIR", "/app/data/workspace")
+WORKSPACE_DIR = os.getenv("AGENT_TEMPLATE_WORKSPACE_DIR", "/app/data/agent-template")
 
 
 def get_connection_params(entry):
