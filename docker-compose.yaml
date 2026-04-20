@@ -13,7 +13,7 @@ services:
       # TODO: Update PUBLIC_HOST to match the service name above
       - PUBLIC_HOST=template-agent
       # TODO: Update MCP_TEMPLATE_URL to point to your MCP service
-      - MCP_TEMPLATE_URL=http://mcp-template:8082/mcp
+      - MCP_TEMPLATE_URL=http://costaff-mcp-template:8082/mcp
       # TODO: Update TEMPLATE_WORKSPACE_DIR if your agent uses a different workspace path
       - TEMPLATE_WORKSPACE_DIR=/app/data/workspace
       - COSTAFF_AGENT_MODEL_PROVIDER=${COSTAFF_AGENT_MODEL_PROVIDER:-gemini}
@@ -26,10 +26,10 @@ services:
     volumes:
       - template_data:/app/data
     depends_on:
-      - mcp-template
+      - costaff-mcp-template
 
   # TODO: Rename "mcp-template" to your MCP service name (kebab-case)
-  mcp-template:
+  costaff-mcp-template:
     build:
       context: ./mcp
     container_name: costaff-mcp-template
