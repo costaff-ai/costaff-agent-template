@@ -23,5 +23,3 @@
   "mcp_configurable": true,
   "mcp_env_var": "TEMPLATE_AGENT_MCP_URLS"
 }
-
-}
