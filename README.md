@@ -31,7 +31,7 @@
 ```
 CoStaff Agent
      │
-     │  A2A Protocol (/.well-known/agent.json)
+     │  A2A Protocol (/.well-known/agent-card.json)
      ▼
 Template Agent  ──►  MCP Template Server  ──►  Your tools / data / APIs
 ```
