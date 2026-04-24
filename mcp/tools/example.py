@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 
 # Read workspace path at call time so it reflects runtime env vars.
-_workspace = lambda: os.getenv("AGENT_TEMPLATE_WORKSPACE_DIR", "/app/data/agent-template")
+_workspace = lambda: os.getenv("WORKSPACE_DIR", "/app/data/costaff-agent-template")
 
 
 def example_read_file(filename: str) -> str:

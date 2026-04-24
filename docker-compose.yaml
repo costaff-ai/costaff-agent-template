@@ -14,8 +14,11 @@ services:
       - PUBLIC_HOST=costaff-agent-template
       # TODO: Update MCP_TEMPLATE_URL to point to your MCP service
       - MCP_TEMPLATE_URL=http://costaff-mcp-template:8082/mcp
+      # Plan B workspace env vars (injected by CoStaff CLI at deploy time)
       - WORKSPACE_DIR=/app/data
-      - AGENT_TEMPLATE_WORKSPACE_DIR=/app/data/agent-template
+      - SHARED_DIR=/app/data/shared
+      - COSTAFF_SHARED_DIR_TEMPLATE=/app/data/shared/costaff-agent-template
+      - AGENT_WORKSPACE_DIR_TEMPLATE=/app/data
       - COSTAFF_AGENT_MODEL_PROVIDER=${COSTAFF_AGENT_MODEL_PROVIDER:-gemini}
       # TODO: Rename TEMPLATE_AGENT_MODEL to your agent's model env var
       - TEMPLATE_AGENT_MODEL=${TEMPLATE_AGENT_MODEL:-gemini-2.5-flash}
@@ -23,8 +26,7 @@ services:
       - LITELLM_MODEL_NAME=${LITELLM_MODEL_NAME:-}
       - LITELLM_API_BASE=${LITELLM_API_BASE:-}
       - LITELLM_API_KEY=${LITELLM_API_KEY:-}
-    volumes:
-      - costaff_data:/app/data
+    # Note: actual bind mounts are injected by the CoStaff CLI in compose-fragment.yaml
     depends_on:
       - costaff-mcp-template
 
@@ -38,10 +40,7 @@ services:
       # TODO: Rename MCP_TEMPLATE_PORT if needed
       - MCP_TEMPLATE_PORT=8082
       - WORKSPACE_DIR=/app/data
-      - AGENT_TEMPLATE_WORKSPACE_DIR=/app/data/agent-template
-    volumes:
-      - costaff_data:/app/data
-
-volumes:
-  costaff_data:
-    name: costaff_data
+      - SHARED_DIR=/app/data/shared
+      - COSTAFF_SHARED_DIR_TEMPLATE=/app/data/shared/costaff-agent-template
+      - AGENT_WORKSPACE_DIR_TEMPLATE=/app/data
+    # Note: actual bind mounts are injected by the CoStaff CLI in compose-fragment.yaml
