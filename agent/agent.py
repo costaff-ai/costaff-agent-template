@@ -12,6 +12,8 @@ logger = logging.getLogger(__name__)
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from google.adk.agents import LlmAgent
+from google.adk.skills import load_skill_from_dir
+from google.adk.tools import skill_toolset
 from google.adk.tools.mcp_tool import McpToolset
 from google.adk.tools.mcp_tool.mcp_session_manager import StreamableHTTPServerParams
 from utils.instructions import AGENT_INSTRUCTION
@@ -33,7 +35,15 @@ def get_connection_params(entry):
 
 # TODO: Replace MCP_TEMPLATE_URL with your own MCP env var and service name
 MCP_TEMPLATE_URL = os.getenv("MCP_TEMPLATE_URL", "http://costaff-mcp-template:8082/mcp")
-tools = [McpToolset(connection_params=StreamableHTTPServerParams(url=MCP_TEMPLATE_URL))]
+_skills_dir = Path(__file__).parent / "utils" / "skills"
+_skills = [
+    load_skill_from_dir(d)
+    for d in sorted(_skills_dir.iterdir())
+    if d.is_dir() and (d / "SKILL.md").exists()
+] if _skills_dir.exists() else []
+logger.info(f"Loaded {len(_skills)} skill(s)")
+
+tools = [McpToolset(connection_params=StreamableHTTPServerParams(url=MCP_TEMPLATE_URL)), skill_toolset.SkillToolset(skills=_skills)]
 logger.info(f"Template MCP URL: {MCP_TEMPLATE_URL}")
 
 # Additional MCPs configured via CoStaff dashboard
