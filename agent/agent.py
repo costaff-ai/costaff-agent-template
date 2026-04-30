@@ -1,134 +1,32 @@
-import os
-import sys
-import json
-import importlib
-import pkgutil
 import logging
-from pathlib import Path
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
 from google.adk.agents import LlmAgent
-from google.adk.skills import load_skill_from_dir
-from google.adk.tools import skill_toolset
-from google.adk.tools.mcp_tool import McpToolset
-from google.adk.tools.mcp_tool.mcp_session_manager import StreamableHTTPServerParams
-from utils.instructions import AGENT_INSTRUCTION
 
-# TODO: Replace with your agent's workspace directory env var and default path
-WORKSPACE_DIR = os.getenv("WORKSPACE_DIR", "/app/data/costaff-agent-template")
+from instruction import build_instruction
+from mcp_toolsets import load_all_mcp_toolsets
+from models import selected_model
+from skills import load_all_skills
+from sub_agents import load_all_sub_agents
 
+# Tools = MCP toolsets + Skill toolset
+tools = list(load_all_mcp_toolsets())
+tools.append(load_all_skills())
 
-def get_connection_params(entry):
-    if isinstance(entry, str):
-        url, headers = entry, None
-    else:
-        url     = entry.get("url", "")
-        headers = entry.get("headers") or None
-    if not url:
-        raise ValueError("MCP entry has no URL")
-    return StreamableHTTPServerParams(url=url, headers=headers or {})
+# Sub-agents (file-based discovery from sub_agents/ folder)
+sub_agents = load_all_sub_agents()
 
-
-# TODO: Replace MCP_TEMPLATE_URL with your own MCP env var and service name
-MCP_TEMPLATE_URL = os.getenv("MCP_TEMPLATE_URL", "http://costaff-mcp-template:8082/mcp")
-_skills_dir = Path(__file__).parent / "utils" / "skills"
-_skills = [
-    load_skill_from_dir(d)
-    for d in sorted(_skills_dir.iterdir())
-    if d.is_dir() and (d / "SKILL.md").exists()
-] if _skills_dir.exists() else []
-logger.info(f"Loaded {len(_skills)} skill(s)")
-
-tools = [McpToolset(connection_params=StreamableHTTPServerParams(url=MCP_TEMPLATE_URL)), skill_toolset.SkillToolset(skills=_skills)]
-logger.info(f"Template MCP URL: {MCP_TEMPLATE_URL}")
-
-# Additional MCPs configured via CoStaff dashboard
-# TODO: Replace TEMPLATE_AGENT_MCP_URLS with your agent-specific env var name
-raw_extra = os.getenv("TEMPLATE_AGENT_MCP_URLS", "")
-if raw_extra:
-    try:
-        extra_config = json.loads(raw_extra)
-        for mcp_name, entry in extra_config.items():
-            if isinstance(entry, dict) and not entry.get("enabled", True):
-                logger.info(f"Skipping disabled extra MCP: {mcp_name}")
-                continue
-            try:
-                tools.append(McpToolset(connection_params=get_connection_params(entry)))
-                logger.info(f"Added extra MCP: {mcp_name}")
-            except Exception as e:
-                logger.error(f"Failed to load extra MCP '{mcp_name}': {e}")
-    except json.JSONDecodeError:
-        logger.error("TEMPLATE_AGENT_MCP_URLS is not valid JSON, skipping extra MCPs")
-
-model_provider = os.getenv("COSTAFF_AGENT_MODEL_PROVIDER", "gemini").lower()
-# TODO: Replace TEMPLATE_AGENT_MODEL with your agent-specific env var name
-model_name = os.getenv("TEMPLATE_AGENT_MODEL", "gemini-2.5-flash")
-
-if model_provider == "litellm":
-    from google.adk.models.lite_llm import LiteLlm
-    selected_model = LiteLlm(
-        model=os.getenv("LITELLM_MODEL_NAME"),
-        api_base=os.getenv("LITELLM_API_BASE"),
-        api_key=os.getenv("LITELLM_API_KEY"),
-    )
-    logger.info("Template Agent using LiteLLM model provider")
-else:
-    selected_model = model_name
-    logger.info(f"Template Agent using model: {selected_model}")
-
-preferred_lang = os.getenv("COSTAFF_PREFERRED_LANGUAGE", "Traditional Chinese (繁體中文)")
-instruction = (
-    AGENT_INSTRUCTION
-    .replace("{WORKSPACE_DIR}", WORKSPACE_DIR)
-    .replace("{user_id}", "shared")
-    .replace("{PREFERRED_LANGUAGE}", preferred_lang)
-)
-
-
-# ---------------------------------------------------------------------------
-# Auto-discover sub-agents from sub_agents/ subdirectory.
-#
-# HOW TO ADD A SUB-AGENT:
-#   1. Create a new .py file inside sub_agents/  (e.g. sub_agents/search_agent.py)
-#   2. Define a module-level variable named `agent` (an LlmAgent instance).
-#   3. It is automatically included in the parent agent's sub_agents list.
-#
-# Example (sub_agents/search_agent.py):
-#
-#   from google.adk.agents import LlmAgent
-#   agent = LlmAgent(name="search_agent", model="gemini-2.5-flash",
-#                    description="...", instruction="...")
-# ---------------------------------------------------------------------------
-
-def _load_sub_agents():
-    sub_agents = []
-    pkg_dir = Path(__file__).parent / "sub_agents"
-    for _, module_name, _ in pkgutil.iter_modules([str(pkg_dir)]):
-        full_name = f"sub_agents.{module_name}"
-        try:
-            module = importlib.import_module(full_name)
-            if hasattr(module, "agent"):
-                sub_agents.append(module.agent)
-                logger.info(f"Loaded sub-agent from sub_agents/{module_name}.py")
-            else:
-                logger.warning(f"sub_agents/{module_name}.py has no `agent` variable, skipping")
-        except Exception as e:
-            logger.error(f"Failed to load sub-agent '{full_name}': {e}")
-    return sub_agents
-
-
-sub_agents = _load_sub_agents()
+# Instruction (placeholders resolved here)
+instruction = build_instruction()
 
 # TODO: Rename `template_agent` to your agent's name (snake_case)
-# TODO: Update `name`, `description`, and `instruction` to match your agent's role
+# TODO: Update `name`, `description` to match your agent's role
 template_agent = LlmAgent(
     name="template_agent",
     model=selected_model,
-    description="TODO: Describe what this agent does in one sentence (Traditional Chinese preferred).",
+    description="TODO: Describe what this agent does in one sentence.",
     instruction=instruction,
     tools=tools,
     sub_agents=sub_agents if sub_agents else None,
