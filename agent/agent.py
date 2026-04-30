@@ -23,11 +23,13 @@ instruction = build_instruction()
 
 # TODO: Rename `template_agent` to your agent's name (snake_case)
 # TODO: Update `name`, `description` to match your agent's role
+# Note: sub_agents must be a list (possibly empty) — to_a2a serving requires
+# `sub_agents=[]` and rejects None.
 template_agent = LlmAgent(
     name="template_agent",
     model=selected_model,
     description="TODO: Describe what this agent does in one sentence.",
     instruction=instruction,
     tools=tools,
-    sub_agents=sub_agents if sub_agents else None,
+    sub_agents=sub_agents,
 )
