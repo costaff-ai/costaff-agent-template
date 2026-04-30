@@ -32,4 +32,12 @@ template_agent = LlmAgent(
     instruction=instruction,
     tools=tools,
     sub_agents=sub_agents,
+    # A2A leaf default: A2A response auto-returns control to the caller
+    # (manager). Disabling parent/peer transfer drops ADK to SingleFlow when
+    # `sub_agents` is empty, omitting the transfer-to-agent system prompt
+    # so Gemini cannot hallucinate `transfer_to_agent` and crash the run.
+    # If you turn this agent into a hub by populating `sub_agents/`, the
+    # children are still routable via the auto-registered transfer tool.
+    disallow_transfer_to_parent=True,
+    disallow_transfer_to_peers=True,
 )
