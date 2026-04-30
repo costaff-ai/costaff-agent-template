@@ -47,12 +47,16 @@ Template Agent  ──►  MCP Template Server  ──►  你的工具 / 資料
 ```
 costaff-agent-template/
 ├── agent/                        # ADK agent 定義
-│   ├── agent.py                  # LlmAgent，含動態 MCP 載入
+│   ├── agent.py                  # LlmAgent（~30 行 orchestrator）
 │   ├── agent_a2a.py              # A2A server 進入點
 │   ├── requirements.txt
-│   └── utils/
-│       └── instructions/
-│           └── agent_instruction.md   # System prompt（主要編輯這裡）
+│   ├── instruction/              # system.md + build_instruction()
+│   │   └── system.md             # System prompt（主要編輯這裡）
+│   ├── mcp_toolsets/             # load_all_mcp_toolsets()
+│   ├── models/                   # selected_model（gemini / litellm）
+│   ├── skills/                   # ADK Skills — 在這裡放 <name>/SKILL.md
+│   ├── sub_agents/               # file-based 子 agent 自動發現
+│   └── tools/                    # 純 Python function tools（預留）
 ├── mcp/                          # MCP server
 │   ├── server.py                 # FastMCP server — 在這裡加入你的工具
 │   ├── requirements.txt
@@ -118,7 +122,7 @@ CoStaff 會讀取 `costaff.agent.json`，自動 build、啟動容器並註冊 ag
 - 加入讓 agent 能存取所需資料、API 或能力的工具
 - 每個工具都必須有清晰的 docstring — LLM 靠它決定何時呼叫該工具
 
-### 3. 撰寫 system prompt（`agent/utils/instructions/agent_instruction.md`）
+### 3. 撰寫 system prompt（`agent/instruction/system.md`）
 
 - 用你的 agent 的身份、角色和工作流程取代佔位內容
 - 在工具使用指南表格中列出實際的工具名稱

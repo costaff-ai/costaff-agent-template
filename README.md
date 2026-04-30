@@ -47,12 +47,16 @@ Template Agent  ──►  MCP Template Server  ──►  Your tools / data / A
 ```
 costaff-agent-template/
 ├── agent/                        # ADK agent definition
-│   ├── agent.py                  # LlmAgent with dynamic MCP loading
+│   ├── agent.py                  # LlmAgent (~30-line orchestrator)
 │   ├── agent_a2a.py              # A2A server entrypoint
 │   ├── requirements.txt
-│   └── utils/
-│       └── instructions/
-│           └── agent_instruction.md   # System prompt (edit this)
+│   ├── instruction/              # system.md + build_instruction()
+│   │   └── system.md             # System prompt (edit this)
+│   ├── mcp_toolsets/             # load_all_mcp_toolsets()
+│   ├── models/                   # selected_model (gemini / litellm)
+│   ├── skills/                   # ADK Skills — drop <name>/SKILL.md here
+│   ├── sub_agents/               # file-based sub-agent auto-discovery
+│   └── tools/                    # plain Python function tools (placeholder)
 ├── mcp/                          # MCP server
 │   ├── server.py                 # FastMCP server — add your tools here
 │   ├── requirements.txt
@@ -117,7 +121,7 @@ Search for all `TODO` comments across the project — each marks a decision poin
 - Add tools that give the agent access to the data, APIs, or capabilities it needs
 - Every tool must have a clear docstring — the LLM reads it to decide when to call the tool
 
-### 3. Write your system prompt (`agent/utils/instructions/agent_instruction.md`)
+### 3. Write your system prompt (`agent/instruction/system.md`)
 
 - Replace the placeholder content with your agent's identity, role, and workflow
 - Reference your actual tool names in the Tool Usage Guide table
