@@ -1,4 +1,5 @@
 {
+  "protocol_version": "1.0",
   "name": "costaff-agent-template",
   "version": "1.0.0",
   "description": "TODO: Describe what this agent does in one sentence.",
