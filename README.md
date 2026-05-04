@@ -190,4 +190,4 @@ This manifest declares the agent's identity and capabilities to the CoStaff plat
 
 ## License
 
-Distributed under the MIT License. See `LICENSE` for details.
+Distributed under the Apache 2.0 License. See `LICENSE` for details.

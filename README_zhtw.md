@@ -191,4 +191,4 @@ CoStaff 會讀取 `costaff.agent.json`，自動 build、啟動容器並註冊 ag
 
 ## 授權
 
-以 MIT License 發佈。詳見 `LICENSE`。
+以 Apache 2.0 License 發佈。詳見 `LICENSE`。
