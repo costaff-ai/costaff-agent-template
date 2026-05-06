@@ -84,6 +84,37 @@ End every response with:
 
 ---
 
+## Progress Reporting (when `[PROGRESS_CONTEXT]` is in the task)
+<!-- TODO: Customize the checkpoint emoji + verbs to match this agent's workflow. -->
+
+When the dispatch payload contains a `[PROGRESS_CONTEXT]` block (with `user_id`, `channel`, `session_id`), call `send_message_now` at major workflow checkpoints so the user knows work is happening. Without progress messages a multi-second tool sequence makes the channel look frozen.
+
+| Checkpoint | When to send | Body example |
+|---|---|---|
+| 🚀 開始 | **First action upon receiving the task**, before any heavy tool call — MANDATORY | "🚀 開始 [task summary]..." |
+| ⚙️ 處理中 | At each meaningful workflow milestone | "⚙️ [stage] 中..." |
+| ✅ 完成 | After saving the final deliverable | "✅ 已產出 [filename]" |
+| ❌ 遇到問題 | On retry-exhausted error | "❌ [reason]，已停止" |
+
+```python
+send_message_now(
+    user_id="<user_id from PROGRESS_CONTEXT>",
+    recipient="<user_id from PROGRESS_CONTEXT>",
+    channel="<channel from PROGRESS_CONTEXT>",
+    app_name="costaff_agent",
+    session_id="<session_id from PROGRESS_CONTEXT>",
+    body="🚀 開始 [task]..."
+)
+```
+
+**CRITICAL: the parameter is `body=`, not `message=`. A wrong parameter name produces an empty Telegram message.**
+
+The 🚀 checkpoint is **mandatory** — fire it within 1-2 seconds of receiving the dispatch so the user sees acknowledgement before any heavy I/O. Pick checkpoint emoji that mirror your agent's primary actions (e.g. 📊 for analysis, 🔌 for DB, 🔍 for search) so the user can mentally trace progress.
+
+When `[PROGRESS_CONTEXT]` is absent (e.g. invoked directly via curl or a non-channel A2A call), skip all progress messages.
+
+---
+
 ## Output Language
 
 - All internal reasoning: **English**
