@@ -78,5 +78,11 @@ _register_tools(mcp)
 
 
 if __name__ == "__main__":
-    logger.info(f"Starting Template MCP server (transport=streamable-http, workspace={WORKSPACE})")
-    mcp.run(transport="streamable-http")
+    # Transport env-selectable. Default SSE: race-free under to_a2a()+
+    # ADK1.33 (streamable-http anyio CancelScope race google/adk-python
+    # #4454 does NOT occur on SSE — verified 2026-05-16). New agents
+    # forked from this template inherit the safe SSE default. Set
+    # MCP_TRANSPORT=streamable-http to switch back once ADK fixes #4454.
+    _t = os.getenv("MCP_TRANSPORT", "sse")
+    logger.info(f"Starting Template MCP server (transport={_t}, workspace={WORKSPACE})")
+    mcp.run(transport=_t)

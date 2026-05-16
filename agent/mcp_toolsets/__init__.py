@@ -22,8 +22,13 @@ import logging
 import os
 from typing import List
 
+import re
+
 from google.adk.tools.mcp_tool import McpToolset
-from google.adk.tools.mcp_tool.mcp_session_manager import StreamableHTTPServerParams
+from google.adk.tools.mcp_tool.mcp_session_manager import (
+    SseConnectionParams,
+    StreamableHTTPServerParams,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -31,8 +36,24 @@ logger = logging.getLogger(__name__)
 DEFAULT_MCP_URL = "http://costaff-mcp-template:8082/mcp"
 
 
+def _server_params(url, headers=None):
+    """ServerParams with transport chosen by MCP_TRANSPORT (default sse).
+
+    Forked agents inherit the SSE default — race-free under to_a2a()+
+    ADK1.33 (the streamable-http anyio CancelScope race
+    google/adk-python#4454 does NOT occur on SSE). The URL /mcp|/sse
+    suffix is normalised. Set MCP_TRANSPORT=streamable-http to switch
+    back once ADK fixes #4454.
+    """
+    t = os.getenv("MCP_TRANSPORT", "sse").strip().lower()
+    base = re.sub(r"/(mcp|sse)/?$", "", (url or "").rstrip("/"))
+    if t == "streamable-http":
+        return StreamableHTTPServerParams(url=base + "/mcp", headers=headers or {})
+    return SseConnectionParams(url=base + "/sse", headers=headers or {})
+
+
 def _connection_params(entry):
-    """Coerce an entry (string URL or dict) into StreamableHTTPServerParams."""
+    """Coerce an entry (string URL or dict) into transport-correct ServerParams."""
     if isinstance(entry, str):
         url, headers = entry, None
     else:
@@ -40,7 +61,7 @@ def _connection_params(entry):
         headers = entry.get("headers") or None
     if not url:
         raise ValueError("MCP entry has no URL")
-    return StreamableHTTPServerParams(url=url, headers=headers or {})
+    return _server_params(url, headers)
 
 
 def load_all_mcp_toolsets() -> List[McpToolset]:
@@ -49,8 +70,9 @@ def load_all_mcp_toolsets() -> List[McpToolset]:
 
     # Own MCP — always connected
     own_url = os.getenv("MCP_TEMPLATE_URL", DEFAULT_MCP_URL)
-    toolsets.append(McpToolset(connection_params=StreamableHTTPServerParams(url=own_url)))
-    logger.info(f"Template MCP URL: {own_url}")
+    _op = _server_params(own_url)
+    toolsets.append(McpToolset(connection_params=_op))
+    logger.info(f"Template MCP: {_op.url} (transport={os.getenv('MCP_TRANSPORT','sse')})")
 
     # Extra MCPs from CoStaff dashboard (e.g. costaff core MCP)
     raw_extra = os.getenv("TEMPLATE_AGENT_MCP_URLS", "")
