@@ -37,7 +37,7 @@ DEFAULT_MCP_URL = "http://costaff-mcp-template:8082/mcp"
 
 
 def _server_params(url, headers=None):
-    """ServerParams with transport chosen by MCP_TRANSPORT (default sse).
+    """ServerParams with transport chosen by MCP_TRANSPORT (default streamable-http).
 
     Forked agents inherit the SSE default — race-free under to_a2a()+
     ADK1.33 (the streamable-http anyio CancelScope race
@@ -45,7 +45,7 @@ def _server_params(url, headers=None):
     suffix is normalised. Set MCP_TRANSPORT=streamable-http to switch
     back once ADK fixes #4454.
     """
-    t = os.getenv("MCP_TRANSPORT", "sse").strip().lower()
+    t = os.getenv("MCP_TRANSPORT", "streamable-http").strip().lower()
     base = re.sub(r"/(mcp|sse)/?$", "", (url or "").rstrip("/"))
     if t == "streamable-http":
         return StreamableHTTPServerParams(url=base + "/mcp", headers=headers or {})
@@ -72,7 +72,7 @@ def load_all_mcp_toolsets() -> List[McpToolset]:
     own_url = os.getenv("MCP_TEMPLATE_URL", DEFAULT_MCP_URL)
     _op = _server_params(own_url)
     toolsets.append(McpToolset(connection_params=_op))
-    logger.info(f"Template MCP: {_op.url} (transport={os.getenv('MCP_TRANSPORT','sse')})")
+    logger.info(f"Template MCP: {_op.url} (transport={os.getenv('MCP_TRANSPORT','streamable-http')})")
 
     # Extra MCPs from CoStaff dashboard (e.g. costaff core MCP)
     raw_extra = os.getenv("TEMPLATE_AGENT_MCP_URLS", "")

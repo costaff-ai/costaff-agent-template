@@ -83,6 +83,6 @@ if __name__ == "__main__":
     # #4454 does NOT occur on SSE — verified 2026-05-16). New agents
     # forked from this template inherit the safe SSE default. Set
     # MCP_TRANSPORT=streamable-http to switch back once ADK fixes #4454.
-    _t = os.getenv("MCP_TRANSPORT", "sse")
+    _t = os.getenv("MCP_TRANSPORT", "streamable-http")
     logger.info(f"Starting Template MCP server (transport={_t}, workspace={WORKSPACE})")
     mcp.run(transport=_t)
