@@ -11,6 +11,11 @@ from models import selected_model
 from skills import load_all_skills
 from tools import load_costaff_api_tools
 from sub_agents import load_all_sub_agents
+from progress import (
+    before_model_callback,
+    before_tool_callback,
+    after_tool_callback,
+)
 
 # Tools = MCP toolsets + Skill toolset
 tools = list(load_all_mcp_toolsets())
@@ -32,6 +37,10 @@ template_agent = LlmAgent(
     model=selected_model,
     description="TODO: Describe what this agent does in one sentence.",
     instruction=instruction,
+    # Code-driven live panel (same canonical progress.py as every agent).
+    before_model_callback=before_model_callback,
+    before_tool_callback=before_tool_callback,
+    after_tool_callback=after_tool_callback,
     tools=tools,
     sub_agents=sub_agents,
     # A2A leaf default: A2A response auto-returns control to the caller
